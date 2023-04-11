@@ -1,4 +1,8 @@
-Sintaxis y Semántica de los Lenguajes K2006
+# **Sintaxis y Semántica de los Lenguajes K2006**
 
-Anahí Félix
-Legajo: 2026922
+### **Curso:** K2006
+### **Año de cursada:** 2023
+
+### **Nombre:** Anahí
+### **Apellido:** Félix
+### **Legajo:** 2026922
