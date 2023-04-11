@@ -1,1 +1,6 @@
-ola mundito
+#include <stdio.h>
+
+int main () {
+
+  return 0;
+}
