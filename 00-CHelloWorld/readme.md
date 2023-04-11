@@ -1,6 +1,7 @@
 TRABAJO N° 0
 "Hello, World!” en C
 Objetivos
+
 • Demostrar capacidad para editar, compilar, y ejecutar programas C mediante el
 desarrollo de un programa simple.
 • Tener un primer contacto con las herramientas necesarias para abordar la resolución
@@ -11,7 +12,4 @@ Temas
 • Proceso de compilación
 • Pruebas
 
-
-
-
-El compilador utilizado es C18
+El compilador utilizado es C18.
