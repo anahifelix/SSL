@@ -9,6 +9,6 @@ Temas
 • Sistema de control de versiones.
 • Lenguaje de programación C.
 • Proceso de compilación
-• Pruebas
+• Pruebasa
 
 
