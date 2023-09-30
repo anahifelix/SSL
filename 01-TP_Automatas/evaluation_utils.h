@@ -36,14 +36,17 @@ int evaluar_palabra(char *palabra)
 
     if (evaluar_decimal(palabra))
     {
+        printf("es palabra decimal.");
         return 1;
     }
     if (evaluar_octal(palabra))
     {
+        printf("es palabra octal.");
         return 2;
     }
     if (evaluar_hexadecimal(palabra))
     {
+        printf("es palabra hexadecimal.");
         return 3;
     }
 
@@ -204,27 +207,26 @@ int verifica_alfabeto_octal(char *s)
 
 int es_palabra_octal(char *palabra)
 {
-    const int FINAL_STATE = 1;
-    const int INVALID_STATE = 2;
+    const int estadoC = 1;
+    const int estadoD = 2;
 
-
-    const int tt[3][8]=
+    const int tt[3][8] =
     {
-        {FINAL_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE},
-        {FINAL_STATE,FINAL_STATE,FINAL_STATE,FINAL_STATE,FINAL_STATE,FINAL_STATE,FINAL_STATE,FINAL_STATE},
-        {INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE}
+        {estadoC, estadoD, estadoD, estadoD, estadoD, estadoD, estadoD, estadoD},
+        {estadoC, estadoC, estadoC, estadoC, estadoC, estadoC, estadoC, estadoC},
+        {estadoD, estadoD, estadoD, estadoD, estadoD, estadoD, estadoD, estadoD}
     };
 
     int estado = 0;
-    int i=0;
-    int c= palabra[i];
-    while(c!='\0')
+    int i = 0;
+    int c = palabra[i];
+    while (c != '\0')
     {
-        estado=tt[estado][columna_octal(c)];
+        estado = tt[estado][columna_octal(c)];
         c = palabra[++i];
     }
 
-    if(estado == FINAL_STATE)
+    if (estado == estadoC)
     {
         return 1;
     }
