@@ -88,9 +88,12 @@ void mostrar_sub_menu(int opcion_menu_principal)
             break;
         case 2:
             if (flagMenu == "1"){
-
+                fgets(expresionInfix, sizeof(expresionInfix), fileBase);
+                strcpy(archivoTxt,expresionInfix);
+                solve(expresionInfix);
             }
             else{
+
             fgets(cadena, sizeof(cadena), fileBase);
             procesar_palabra(cadena);}
             break;
