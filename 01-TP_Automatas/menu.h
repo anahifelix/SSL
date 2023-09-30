@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "string_utils.h"
 #include "evaluation_utils.h"
 #include "parser.h"
 
@@ -73,7 +72,6 @@ void mostrar_sub_menu(int opcion_menu_principal)
         switch (opcion_Menu_Secundario)
         {
         case 1:
-
             if (flagMenu == "1"){
                 printf("Ingrese una expresion aritmetica: ");
                 scanf("%s", &expresionInfix);
@@ -107,4 +105,4 @@ void mostrar_sub_menu(int opcion_menu_principal)
     while (opcion_Menu_Secundario != 3);
 
     fclose(fileBase);
-}
+    }

@@ -1,5 +1,5 @@
-int char_a_entero(const char *c) {
+#include <stdio.h>
+
+int charToInt(const char *c) {
     return c - '0';
 }
-
-

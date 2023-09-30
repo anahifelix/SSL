@@ -3,6 +3,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
+#include "string_utils.h"
 
 // Estructura para la pila de operandos
 typedef struct {
@@ -98,7 +99,7 @@ int evaluarExpresionRPN(const char *expresionRPN) {
 
         if (isdigit(caracter) || (caracter == '-' && isdigit(expresionRPN[i + 1]))) {
             // Leer un n�mero
-            int numero = strtol(&expresionRPN[i], NULL, 10);
+            int numero = charToInt(expresionRPN[i]);
             pushOperand(stack, numero);
             // Mover el �ndice 'i' al final del n�mero
             while (isdigit(expresionRPN[i]) || expresionRPN[i] == '-') {
@@ -207,7 +208,7 @@ void infixToPostfix(const char *expresionInfix, char **expresionPostfix) {
 
 void solve(char *expresionInfix ){
     char *expresionPostfix = NULL;
-    expresionInfix[strlen(expresionInfix)] = '\0'; 
+    expresionInfix[strlen(expresionInfix) ] = '\0'; 
     printf("Expresion en notacion INfija: %s\n", expresionInfix);
     infixToPostfix(expresionInfix, &expresionPostfix);
     printf("Expresion en notacion posfija: %s\n", expresionPostfix);
