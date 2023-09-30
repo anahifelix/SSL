@@ -1,43 +1,38 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "string_utils.h"
 #include "evaluation_utils.h"
 #include "parser.h"
 
-char cadenaPrueba[100] = "-01230$-01231$1A$012347$0xFFFF";
-char operation_string[40] = "2+3*4/3-2";
+void mostrarMenuParseado(void);
+void mostrarMenuSecundario(void);
+void solve(char *expresionInfix, char *expresionPostfix);
+
 char stringA[40];
-void mostrar_menu()
+char *expresionInfix = NULL;
+char *expresionPostfix = NULL;
+void mostrarMenu()
 {
-    int opcion_menu;
+    int opcion_menu_principal;
     do
     {
-        printf("1. Parsear operaciones matematicas desde archivo.\n");
-        printf("2. Parsear operaciones matematicas desde consola.\n");
-
-        printf("3. Evaluar una cadena en los sistemas numericos Decimales, Octales y Hexadecimal desde archivo\n");
-        printf("4. Evaluar una cadena en los sistemas numericos Decimales, Octales y Hexadecimal desde consola\n");
-
-        printf("5. Salir.\n\n\n");
+        printf("1. Parsear operaciones matematicas.\n");
+        printf("2. Evaluar una cadena en los sistemas numericos Decimales, Octales y Hexadecimal\n");
+        printf("3. Salir.\n\n\n");
         printf("Seleccione una opcion: ");
 
-        scanf("%d", &opcion_menu);
+        scanf("%d", &opcion_menu_principal);
 
-        switch (opcion_menu)
+        switch (opcion_menu_principal)
         {
         case 1:
-            //mostrarMenuParseado();
+            mostrar_sub_menu(opcion_menu_principal);
             break;
         case 2:
-            //mostrarMenuSecundario();
+            mostrar_sub_menu(opcion_menu_principal);
             break;
         case 3:
-           // printf("Saliendo del programa.\n");
-            break;
-        case 4:
-           // printf("Saliendo del programa.\n");
-            break;
-        case 5:
             printf("Saliendo del programa.\n");
             break;
         default:
@@ -45,34 +40,68 @@ void mostrar_menu()
             break;
         }
     }
-    while (opcion_menu != 5);
+    while (opcion_menu_principal != 3);
 }
 
-
-
-
-
-char obtenerDatosArchivo()
+void mostrar_sub_menu(int opcion_menu_principal)
 {
-    char cadena_Archivo[40];
-    char archivoTxt[20] = "automata.txt";
-    FILE* automata = fopen(archivoTxt, "r");
-    if (automata == NULL)
-    {
-        printf("archivo no encontrado\n");
-        exit(1);
-    }
-    else
-    {
-        fgets(cadena_Archivo, sizeof(cadena_Archivo), automata);
-        return cadena_Archivo;
-    }
-}
+    int opcion_Menu_Secundario;
+    char cadena[100];
+    FILE* fileBase;
+    char archivoTxt[20];
+    char *flagMenu;
 
-char* obtenerDatosConsola ()
-{
-    char cadena_consola[100];
-    printf("ingrese una cadena: ");
-    scanf("%s",&cadena_consola);
-    return cadena_consola;
+    if (opcion_menu_principal == 1) {
+        flagMenu = "1";
+        strcpy(archivoTxt, "operaciones.txt");
+    } else {
+        flagMenu = "2";
+        strcpy(archivoTxt, "automata.txt");
+    }
+    fileBase = fopen(archivoTxt, "r");
+    if (fileBase == NULL) {
+        printf("No se pudo abrir el archivo.\n");
+        return;
+    }
+    do
+
+    {
+        printf("1. Ingresar por consola.\n");
+        printf("2. Ingresar por archivo.\n");
+        printf("3. Volver al menu anterior.\n\n\n");
+        printf("Seleccione una opcion: ");
+
+        scanf("%d", &opcion_Menu_Secundario);
+        //se maneja de igual forma que la pantalla principal
+        switch (opcion_Menu_Secundario)
+        {
+        case 1:
+
+            if (flagMenu == "1"){
+                solve(expresionInfix,expresionPostfix);
+            }
+            else{
+            printf("ingrese una cadena: ");
+            scanf("%s",&cadena);
+            procesar_palabra(cadena);
+            }
+            break;
+        case 2:
+            if (flagMenu == "1"){
+
+            }
+            else{
+            fgets(cadena, sizeof(cadena), fileBase);
+            procesar_palabra(cadena);}
+            break;
+        case 3:
+            break;
+        default:
+            printf("\nOpcion invalida\n");
+            break;
+        }
+    }
+    while (opcion_Menu_Secundario != 3);
+
+    fclose(fileBase);
 }
