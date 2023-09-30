@@ -30,7 +30,7 @@ OperandStack *createOperandStack() {
 void pushOperand(OperandStack *stack, int value) {
     stack->top++;
     if (stack->top >= stack->size) {
-        // Aumentar el tamaï¿½o de la pila si es necesario
+        // Aumentar el tamaño de la pila si es necesario
         stack->size *= 2;
         stack->items = (int *)realloc(stack->items, sizeof(int) * stack->size);
     }
@@ -44,7 +44,7 @@ int popOperand(OperandStack *stack) {
         return value;
     } else {
         // Manejar error de desbordamiento de la pila (puedes implementar manejo de errores adecuado)
-        printf("Error: Pila de operandos vacï¿½a.\n");
+        printf("Error: Pila de operandos vacía.\n");
         exit(1);
     }
 }
@@ -66,7 +66,7 @@ OperatorStack *createOperatorStack() {
 void pushOperator(OperatorStack *stack, char value) {
     stack->top++;
     if (stack->top >= stack->size) {
-        // Aumentar el tamaï¿½o de la pila si es necesario
+        // Aumentar el tamaño de la pila si es necesario
         stack->size *= 2;
         stack->items = (char *)realloc(stack->items, sizeof(char) * stack->size);
     }
@@ -80,7 +80,7 @@ char popOperator(OperatorStack *stack) {
         return value;
     } else {
         // Manejar error de desbordamiento de la pila (puedes implementar manejo de errores adecuado)
-        printf("Error: Pila de operadores vacï¿½a.\n");
+        printf("Error: Pila de operadores vacía.\n");
         exit(1);
     }
 }
@@ -97,10 +97,10 @@ int evaluarExpresionRPN(const char *expresionRPN) {
         char caracter = expresionRPN[i];
 
         if (isdigit(caracter) || (caracter == '-' && isdigit(expresionRPN[i + 1]))) {
-            // Leer un nï¿½mero
+            // Leer un número
             int numero = strtol(&expresionRPN[i], NULL, 10);
             pushOperand(stack, numero);
-            // Mover el ï¿½ndice 'i' al final del nï¿½mero
+            // Mover el índice 'i' al final del número
             while (isdigit(expresionRPN[i]) || expresionRPN[i] == '-') {
                 i++;
             }
@@ -122,7 +122,7 @@ int evaluarExpresionRPN(const char *expresionRPN) {
                     if (operand2 != 0) {
                         pushOperand(stack, operand1 / operand2);
                     } else {
-                        printf("Error: Divisiï¿½n por cero.\n");
+                        printf("Error: División por cero.\n");
                         exit(1);
                     }
                     break;
@@ -138,7 +138,7 @@ int evaluarExpresionRPN(const char *expresionRPN) {
     return resultado;
 }
 
-// Funciï¿½n para determinar la prioridad de los operadores
+// Función para determinar la prioridad de los operadores
 int getPriority(char operador) {
     if (operador == '+' || operador == '-') {
         return 1;
@@ -150,21 +150,21 @@ int getPriority(char operador) {
 
 }
 
-// Funciï¿½n para convertir expresiï¿½n infija a posfija sin parï¿½ntesis
+// Función para convertir expresión infija a posfija sin paréntesis
 void infixToPostfix(const char *expresionInfix, char **expresionPostfix) {
     OperatorStack *stack = createOperatorStack();
     int outputIndex = 0;
-    int postfixSize = 1; // Tamaï¿½o inicial de la expresiï¿½n posfija
+    int postfixSize = 1; // Tamaño inicial de la expresión posfija
     *expresionPostfix = (char *)malloc(sizeof(char) * postfixSize);
 
     for (int i = 0; expresionInfix[i] != '\0'; i++) {
         char caracter = expresionInfix[i];
 
         if (isdigit(caracter)) {
-            // Si es un dï¿½gito, agregarlo directamente a la salida
+            // Si es un dígito, agregarlo directamente a la salida
             while (isdigit(expresionInfix[i])) {
                 (*expresionPostfix)[outputIndex++] = expresionInfix[i++];
-                // Aumentar el tamaï¿½o de la expresiï¿½n posfija si es necesario
+                // Aumentar el tamaño de la expresión posfija si es necesario
                 if (outputIndex >= postfixSize) {
                     postfixSize *= 2;
                     *expresionPostfix = (char *)realloc(*expresionPostfix, sizeof(char) * postfixSize);
@@ -176,7 +176,7 @@ void infixToPostfix(const char *expresionInfix, char **expresionPostfix) {
             // Si es un operador, desapilar operadores de mayor o igual prioridad y agregarlos a la salida
             while (stack->top >= 0 && getPriority(stack->items[stack->top]) >= getPriority(caracter)) {
                 (*expresionPostfix)[outputIndex++] = popOperator(stack);
-                // Aumentar el tamaï¿½o de la expresiï¿½n posfija si es necesario
+                // Aumentar el tamaño de la expresión posfija si es necesario
                 if (outputIndex >= postfixSize) {
                     postfixSize *= 2;
                     *expresionPostfix = (char *)realloc(*expresionPostfix, sizeof(char) * postfixSize);
@@ -190,7 +190,7 @@ void infixToPostfix(const char *expresionInfix, char **expresionPostfix) {
     // Desapilar cualquier operador restante en la pila
     while (stack->top >= 0) {
         (*expresionPostfix)[outputIndex++] = popOperator(stack);
-        // Aumentar el tamaï¿½o de la expresiï¿½n posfija si es necesario
+        // Aumentar el tamaño de la expresión posfija si es necesario
         if (outputIndex >= postfixSize) {
             postfixSize *= 2;
             *expresionPostfix = (char *)realloc(*expresionPostfix, sizeof(char) * postfixSize);
@@ -203,18 +203,34 @@ void infixToPostfix(const char *expresionInfix, char **expresionPostfix) {
     // Liberar la memoria de la pila de operadores
     freeOperatorStack(stack);
 
+    printf("traduccion fin");
+    printf("%d",expresionPostfix);
 }
 
-void solve(char *expresionInfix ){
-    char *expresionPostfix = NULL;
-    expresionInfix[strlen(expresionInfix)] = '\0'; 
-    printf("Expresion en notacion INfija: %s\n", expresionInfix);
+void solve(char *expresionInfix,char *expresionPostfix){
+
+    printf("Ingrese una expresion aritmetica: ");
+
+    size_t len = 0;
+    expresionInfix = (char *)malloc(sizeof(char) * 100); // Reservar memoria para la entrada
+    if (expresionInfix == NULL) {
+        printf("Error: No se pudo asignar memoria para la entrada.\n");
+        return 1;
+    }
+
+    if (fgets(expresionInfix, 100, stdin) == NULL) {
+        printf("Error al leer la entrada.\n");
+        return 1;
+    }
+
+    expresionInfix[strlen(expresionInfix) - 1] = '\0'; // Eliminar el salto de línea al final
+
     infixToPostfix(expresionInfix, &expresionPostfix);
-    printf("Expresion en notacion posfija: %s\n", expresionPostfix);
+    printf("Expresión en notación posfija: %s\n", expresionPostfix);
 
     int resultado = evaluarExpresionRPN(expresionPostfix);
     printf("Resultado: %d\n", resultado);
 
-    free(expresionInfix); 
-    free(expresionPostfix); 
+    free(expresionInfix); // Liberar la memoria de la entrada
+    free(expresionPostfix); // Liberar la memoria de la expresión posfija
 }

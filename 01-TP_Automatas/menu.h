@@ -7,7 +7,7 @@
 
 void mostrarMenuParseado(void);
 void mostrarMenuSecundario(void);
-void solve(char *expresionInfix);
+void solve(char *expresionInfix, char *expresionPostfix);
 
 char stringA[40];
 char *expresionInfix = NULL;
@@ -27,6 +27,8 @@ void mostrarMenu()
         switch (opcion_menu_principal)
         {
         case 1:
+            mostrar_sub_menu(opcion_menu_principal);
+            break;
         case 2:
             mostrar_sub_menu(opcion_menu_principal);
             break;
@@ -48,7 +50,7 @@ void mostrar_sub_menu(int opcion_menu_principal)
     FILE* fileBase;
     char archivoTxt[20];
     char *flagMenu;
-    char expresionInfix[100];
+
     if (opcion_menu_principal == 1) {
         flagMenu = "1";
         strcpy(archivoTxt, "operaciones.txt");
@@ -62,6 +64,7 @@ void mostrar_sub_menu(int opcion_menu_principal)
         return;
     }
     do
+
     {
         printf("1. Ingresar por consola.\n");
         printf("2. Ingresar por archivo.\n");
@@ -75,10 +78,7 @@ void mostrar_sub_menu(int opcion_menu_principal)
         case 1:
 
             if (flagMenu == "1"){
-                printf("Ingrese una expresion aritmetica: ");
-                scanf("%s", &expresionInfix);
-                strcpy(archivoTxt,expresionInfix);
-                solve(expresionInfix);
+                solve(expresionInfix,expresionPostfix);
             }
             else{
             printf("ingrese una cadena: ");
