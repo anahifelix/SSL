@@ -74,17 +74,6 @@ void pushOperator(OperatorStack *stack, char value) {
     stack->items[stack->top] = value;
 }
 
-char popOperator(OperatorStack *stack) {
-    if (stack->top >= 0) {
-        char value = stack->items[stack->top];
-        stack->top--;
-        return value;
-    } else {
-        // Manejar error de desbordamiento de la pila (puedes implementar manejo de errores adecuado)
-        printf("Error: Pila de operadores vac�a.\n");
-        exit(1);
-    }
-}
 
 void freeOperatorStack(OperatorStack *stack) {
     free(stack->items);
@@ -208,14 +197,23 @@ void infixToPostfix(const char *expresionInfix, char **expresionPostfix) {
 
 void solve(char *expresionInfix ){
     char *expresionPostfix = NULL;
-    expresionInfix[strlen(expresionInfix) ] = '\0'; 
-    printf("Expresion en notacion INfija: %s\n", expresionInfix);
-    infixToPostfix(expresionInfix, &expresionPostfix);
-    printf("Expresion en notacion posfija: %s\n", expresionPostfix);
 
-    int resultado = evaluarExpresionRPN(expresionPostfix);
-    printf("Resultado: %d\n", resultado);
+    if (evaluarDecimalConOperaciones(expresionInfix))
+    {
+        printf("\n%s verifica decimal \n",expresionInfix);
+        expresionInfix[strlen(expresionInfix) ] = '\0';
+        printf("Expresion en notacion INfija: %s\n", expresionInfix);
+        infixToPostfix(expresionInfix, &expresionPostfix);
+        printf("Expresion en notacion posfija: %s\n", expresionPostfix);
 
-    free(expresionInfix); 
-    free(expresionPostfix); 
+        int resultado = evaluarExpresionRPN(expresionPostfix);
+        printf("Resultado: %d\n", resultado);
+
+        free(expresionInfix);
+        free(expresionPostfix);
+    }
+    else{
+        printf("NO VERIFICA ALFABETO DECIMAL");
+    }
+
 }

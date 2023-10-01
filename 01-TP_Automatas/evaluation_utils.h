@@ -57,12 +57,12 @@ int evaluar_palabra(char *palabra)
         return 1;
     }
     if (evaluar_octal(palabra))
-    {   
+    {
         printf("\n%s verifica octal \n",palabra);
         return 2;
     }
     if (evaluar_hexadecimal(palabra))
-    {   
+    {
         printf("\n%s verifica hexadecimal \n",palabra);
         return 3;
     }
@@ -90,6 +90,24 @@ int verifica_alfabeto_decimal(char *s)
     for(i=0; s[i]; i++)
     {
         if(!(s[i]=='+'|| s[i]=='-'||isdigit(s[i])))
+        {
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
+int evaluarDecimalConOperaciones(char *s){
+    unsigned int i;
+
+    for(i=0; s[i]; i++)
+    {
+        if(s[i] == 0 && i == 0){
+            return 0;
+        }
+
+        if((s[i]!='+'&& s[i] !='-' && s[i]!='*' && s[i]!='/' && !isdigit(s[i])))
         {
             return 0;
         }
@@ -269,7 +287,7 @@ int columna_octal(int c)
         return 7;
         break;
     default:
-        return -1;    
+        return -1;
     }
 }
 
@@ -334,7 +352,7 @@ int es_palabra_hexadecimal(char *palabra)
     {
         return 1;
     }
-    else{ 
+    else{
     return -1;
     }
     }
