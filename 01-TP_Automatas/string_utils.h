@@ -1,5 +1,5 @@
 #include <stdio.h>
 
-int charToInt(const char *c) {
+int charToInt(char c) {
     return c - '0';
 }

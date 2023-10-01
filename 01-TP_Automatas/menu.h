@@ -5,8 +5,9 @@
 #include "parser.h"
 
 void mostrarMenuParseado(void);
-void mostrarMenuSecundario(void);
+void mostrar_sub_menu(int);
 void solve(char *expresionInfix);
+void procesar_palabra(char *cadena);
 
 char stringA[40];
 char *expresionInfix = NULL;
@@ -72,20 +73,20 @@ void mostrar_sub_menu(int opcion_menu_principal)
         switch (opcion_Menu_Secundario)
         {
         case 1:
-            if (flagMenu == "1"){
+            if (strcmp(flagMenu, "1") == 0){
                 printf("Ingrese una expresion aritmetica: ");
-                scanf("%s", &expresionInfix);
+                scanf("%s", expresionInfix);
                 strcpy(archivoTxt,expresionInfix);
                 solve(expresionInfix);
             }
             else{
             printf("ingrese una cadena: ");
-            scanf("%s",&cadena);
+            scanf("%s",cadena);
             procesar_palabra(cadena);
             }
             break;
         case 2:
-            if (flagMenu == "1"){
+            if (strcmp(flagMenu, "1") == 0){
                 fgets(expresionInfix, sizeof(expresionInfix), fileBase);
                 strcpy(archivoTxt,expresionInfix);
                 solve(expresionInfix);

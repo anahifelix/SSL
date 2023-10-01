@@ -1,5 +1,21 @@
 #include <stdio.h>
 #include <ctype.h>
+
+
+int evaluar_palabra(char *palabra);
+int evaluar_decimal(char *palabra);
+int verifica_alfabeto_decimal(char *s);
+int es_palabra_decimal(char *palabra);
+int columna_decimal(int c);
+int evaluar_octal(char *palabra);
+int verifica_alfabeto_octal(char *s);
+int es_palabra_octal(char *palabra);
+int columna_octal(int c);
+int evaluar_hexadecimal(char *palabra);
+int verifica_alfabeto_hexadecimal(char *s);
+int es_palabra_hexadecimal(char *palabra);
+int columna_hexadecimal(int c);
+
 void procesar_palabra(char *cadena)
 {
     int contador_numeros_decimales = 0;
@@ -29,7 +45,7 @@ void procesar_palabra(char *cadena)
 
         printf("---------------------------------");
     }
-    printf("\n\n DECIMALES : %d , OCTALES: %d , HEXADECIMALES: %d\n", contador_numeros_decimales, contador_numeros_octales, contador_numeros_hexadecimales);
+    printf("\n\n DECIMALES : %d , OCTALES: %d , HEXADECIMALES: %d\n\n", contador_numeros_decimales, contador_numeros_octales, contador_numeros_hexadecimales);
 }
 
 int evaluar_palabra(char *palabra)
@@ -46,9 +62,11 @@ int evaluar_palabra(char *palabra)
         return 2;
     }
     if (evaluar_hexadecimal(palabra))
-    {
+    {   
+        printf("\n%s verifica hexadecimal \n",palabra);
         return 3;
     }
+        printf("\n%s no verifica ninguna de las 3\n",palabra);
 
     return -1;
 }
@@ -161,6 +179,8 @@ int columna_decimal(int c)
     case '-':
         return 11;
         break;
+    default:
+        return -1;
     }
 }
 /******************* OCTAL ************************/
@@ -248,6 +268,8 @@ int columna_octal(int c)
     case '7':
         return 7;
         break;
+    default:
+        return -1;    
     }
 }
 
@@ -255,18 +277,14 @@ int columna_octal(int c)
 int evaluar_hexadecimal(char *palabra)
 {
     int respuesta_verifica_alfabeto_hexadecimal = verifica_alfabeto_hexadecimal(palabra);
-    printf("verifica alfabeto hexadecimal %s? %d\n",palabra,respuesta_verifica_alfabeto_hexadecimal);
     int respuesta_es_palabra_hexadecimal= 0;
 
     if(respuesta_verifica_alfabeto_hexadecimal==1)
     {
         respuesta_es_palabra_hexadecimal = es_palabra_hexadecimal(palabra);
-        printf("es palabra hexadecimal %s? %d\n",palabra,respuesta_es_palabra_hexadecimal);
-
     }
     else
     {
-        printf("No se evalua la palabra %s porque no verifica alfabeto hexadecimal\n", palabra);
     }
     return respuesta_es_palabra_hexadecimal;
 }
@@ -277,7 +295,8 @@ int verifica_alfabeto_hexadecimal(char *s)
 
     for(i=0; s[i]; i++)
     {
-        if(!(toupper(s[i])== 'A'||toupper(s[i])== 'B'||toupper(s[i])== 'C'||toupper(s[i])== 'D'||toupper(s[i])== 'E'||toupper(s[i])== 'F'||toupper(s[i])== 'X'||isdigit(s[i])))
+        if(!(toupper(s[i])== 'A'||toupper(s[i])== 'B'||toupper(s[i])== 'C'||toupper(s[i])== 'D'||toupper(s[i])== 'E'||toupper(s[i])== 'F'||toupper(s[i])== 'X' ||
+        toupper(s[i])== 'a'||toupper(s[i])== 'b'||toupper(s[i])== 'c'||toupper(s[i])== 'd'||toupper(s[i])== 'e'||toupper(s[i])== 'f'||toupper(s[i])== 'x'||isdigit(s[i])))
         {
             return 0;
         }
@@ -288,29 +307,36 @@ int verifica_alfabeto_hexadecimal(char *s)
 
 int es_palabra_hexadecimal(char *palabra)
 {
-    const int FINAL_STATE = 2;
-    const int INVALID_STATE = 3;
+    const int estadoB = 1;
+    const int estadoC = 2;
+    const int estadoD = 3;
 
     const int tt[4][24]=
     {
-        {INVALID_STATE,INVALID_STATE,1,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE},
-        {FINAL_STATE,FINAL_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE},
-        {INVALID_STATE,INVALID_STATE,FINAL_STATE,FINAL_STATE,FINAL_STATE,FINAL_STATE,FINAL_STATE,FINAL_STATE,FINAL_STATE,FINAL_STATE,FINAL_STATE,FINAL_STATE,FINAL_STATE,FINAL_STATE,FINAL_STATE,FINAL_STATE},
-        {INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE,INVALID_STATE},
+    {estadoD, estadoD, estadoB, estadoD, estadoD, estadoD, estadoD, estadoD, estadoD, estadoD, estadoD, estadoD, estadoD, estadoD, estadoD, estadoD},
+    {estadoC, estadoC, estadoD, estadoD, estadoD, estadoD, estadoD, estadoD, estadoD, estadoD, estadoD, estadoD, estadoD, estadoD, estadoD, estadoD},
+    {estadoD, estadoD, estadoC, estadoC, estadoC, estadoC, estadoC, estadoC, estadoC, estadoC, estadoC, estadoC, estadoC, estadoC, estadoC, estadoC},
+    {estadoD, estadoD, estadoD, estadoD, estadoD, estadoD, estadoD, estadoD, estadoD, estadoD, estadoD, estadoD, estadoD, estadoD, estadoD, estadoD},
     };
 
     int estado = 0;
-    int i=0;
+    int i = 0;
     int c= palabra[i];
+    if((palabra[0] == '0' && palabra[1] == 'x' )||(palabra[0] == '0' && palabra[1] == 'X')){
+        i = 2;
     while(c!='\0')
     {
         estado=tt[estado][columna_hexadecimal(c)];
         c = palabra[++i];
     }
 
-    if(estado == FINAL_STATE)
+    if(estado == estadoC)
     {
         return 1;
+    }
+    else{ 
+    return -1;
+    }
     }
     return 0;
 }
@@ -358,38 +384,40 @@ int columna_hexadecimal(int c)
     case 'a':
         return 12;
         break;
-    case 'A':
+    case 'b':
         return 13;
         break;
-    case 'b':
+    case 'c':
         return 14;
         break;
-    case 'B':
+    case 'd':
         return 15;
         break;
-    case 'c':
+    case 'e':
         return 16;
         break;
-    case 'C':
+    case 'f':
         return 17;
         break;
-    case 'd':
+    case 'A':
         return 18;
         break;
-    case 'D':
+    case 'B':
         return 19;
         break;
-    case 'e':
+    case 'C':
         return 20;
         break;
-    case 'E':
+    case 'D':
         return 21;
         break;
-    case 'f':
+    case 'E':
         return 22;
         break;
     case 'F':
         return 23;
         break;
+    default:
+        return -1;
     }
 }
