@@ -64,6 +64,18 @@ OperatorStack *createOperatorStack() {
     return stack;
 }
 
+char popOperator(OperatorStack *stack) {
+    if (stack->top >= 0) {
+        char value = stack->items[stack->top];
+        stack->top--;
+        return value;
+    } else {
+        // Manejar error de desbordamiento de la pila (puedes implementar manejo de errores adecuado)
+        printf("Error: Pila de operadores vac�a.\n");
+        exit(1);
+    }
+}
+
 void pushOperator(OperatorStack *stack, char value) {
     stack->top++;
     if (stack->top >= stack->size) {
