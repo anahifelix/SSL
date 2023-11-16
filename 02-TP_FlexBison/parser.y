@@ -1,1 +1,5 @@
+*** PROLOGO**
 
+%{
+#include <stdio.h>
+%}
