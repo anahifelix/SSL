@@ -27,7 +27,7 @@ constante               ({numero})+
 "*"                     return '*';
 ","                     return ',';
 ":="                    return ASIGNACION;
-
+ 
 %%
 *************codigo****************
 void mostrarEror() {
