@@ -1,34 +1,38 @@
-*** PROLOGO**
-
 %{
+int yylex();
+
 #include <stdio.h>
-#include <stdlib.h> 
+#include <stdlib.h>
+#include <string.h>
+
+void yyerror(char *s);
+extern int yyleng;
+
 %}
 
-// DECLARACIONES BISON
+%token INICIO FIN LEER ESCRIBIR PUNTOYCOMA 
+%token <id> ID
+%token <cte> CONSTANTE
 
 %union {
     char* id;
     int cte;
 }
 
-%token INICIO FIN LEER ESCRIBIR PUNTOYCOMA 
-%token <id> ID
-%token <cte> CONSTANTE
+%right ASIGNACION
 
-// REGLAS GRAMATICALES
-
+%% 
 programa:
-       INICIO listaSentencias FIN                       {if (yynerrs || yylexerrs) YYABORT; return -1} // verifica si ha habido errores durante el análisis lex o sintact
+      INICIO listaSentencias FIN                      
 ; 
 
-listaSetencias:
-   sentencia | sentencia listaSentencias;
+listaSentencias:
+    sentencia | sentencia listaSentencias
+;
 
 sentencia:
-   ID {if(yyleng>32) yyerror("MUY LARGO");} ASIGNACION expresion PUNTOYCOMA | leer '(' listaID ')' PUNTOYOMA | escribir '(' listaExpresion ')' PUNTOYCOMA
+    ID {printf("la longitud es: %d",yyleng);if(yyleng>32) yyerror("muy largo che");} ASIGNACION expresion PUNTOYCOMA | LEER '(' listaID ')' PUNTOYCOMA | ESCRIBIR '(' listaExpresion ')' PUNTOYCOMA
 ;
-// no es necesario declarar todos los tokens, podemos usar comillas
 
 listaID: ID | listaID  ',' listaID ID
 ;
@@ -44,15 +48,9 @@ primaria: ID |CONSTANTE |'(' expresion '('
 
 operadorAditivo: '+' | '-'
 ;
-// EPILOGO
-int main() {
-    yyparse(); // realiza el análisis sintáctico
-}
 
-void yyerror (char *s){
-printf ("mi error personalizado es %s\n",s); // funcion llamada cndo se encuentra un error
-}
+%%
 
-int yywrap()  {
-  return 1;  
-} // avisa si llegó al final del programa
+void yyerror(char *s) {
+    fprintf(stderr, "%s\n", s);
+}
