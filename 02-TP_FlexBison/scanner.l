@@ -2,6 +2,7 @@
 
 %{
 #include <stdio.h>
+#include <string.h>
 #include "parser.tab.h"
 
 void mostrarError();
