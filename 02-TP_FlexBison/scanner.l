@@ -20,6 +20,9 @@ constante               ({numero})+
 "leer"                  return LEER;
 "escribir"              return ESCRIBIR;
 
+
+{identificador}         {yylval.id = strdup(yytext); return ID;} // copia caracteres correspondiente al identificador (capturada por yytext) en una nueva cn la función strdup.
+{constante}             {yylval.cte = atoi(yytext); return CONSTANTE;} // convierte la constante a un valor numm
 "("                     return '(';
 ")"                     return ')';
 ";"                     return  PUNTOYCOMA;
