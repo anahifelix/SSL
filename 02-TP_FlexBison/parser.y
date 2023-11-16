@@ -44,3 +44,15 @@ primaria: ID |CONSTANTE |'(' expresion '('
 
 operadorAditivo: '+' | '-'
 ;
+// EPILOGO
+int main() {
+    yyparse(); // realiza el análisis sintáctico
+}
+
+void yyerror (char *s){
+printf ("mi error personalizado es %s\n",s); // funcion llamada cndo se encuentra un error
+}
+
+int yywrap()  {
+  return 1;  
+} // avisa si llegó al final del programa
