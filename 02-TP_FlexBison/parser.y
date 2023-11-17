@@ -49,7 +49,7 @@ expresion:
 ; 
 
 primaria: 
-    ID { printf("primaria: ID, d\n", atoi($1)); }  | CONSTANTE { printf("primaria: CONSTANTE, $$", $1); } |'(' expresion ')' { printf("expresion: (%d)\n", $2); }
+    ID { printf("primaria: ID, %d\n", atoi($1)); }  | CONSTANTE { printf("primaria: CONSTANTE, %d\n", $1); } |'(' expresion ')' { printf("expresion: %d\n", $2); }
 ;
 
 %%
