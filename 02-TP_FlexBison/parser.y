@@ -6,11 +6,10 @@ int yylex();
 #include <string.h>
 
 void yyerror(char *s);
-extern int yyleng;
 
 %}
 
-%token INICIO FIN LEER ESCRIBIR PUNTOYCOMA 
+%token INICIO FIN LEER ESCRIBIR PUNTOYCOMA IMPRIMIR
 %token <id> ID
 %token <cte> CONSTANTE
 
@@ -19,11 +18,14 @@ extern int yyleng;
     int cte;
 }
 
+%left '+' '-' ',' 
 %right ASIGNACION
+
+%type <cte> expresion primaria
 
 %% 
 programa:
-      INICIO listaSentencias FIN                      
+    INICIO listaSentencias FIN                      
 ; 
 
 listaSentencias:
@@ -31,26 +33,31 @@ listaSentencias:
 ;
 
 sentencia:
-    ID {printf("la longitud es: %d",yyleng);if(yyleng>32) yyerror("muy largo che");} ASIGNACION expresion PUNTOYCOMA | LEER '(' listaID ')' PUNTOYCOMA | ESCRIBIR '(' listaExpresion ')' PUNTOYCOMA
+    ID ASIGNACION expresion PUNTOYCOMA | LEER '(' listaID ')' PUNTOYCOMA | ESCRIBIR '(' listaExpresion ')' PUNTOYCOMA
 ;
 
-listaID: ID | listaID  ',' listaID ID
+listaID: 
+    ID | listaID  ',' ID
 ;
 
-listaExpresion: expresion | listaExpresion  ',' listaExpresion expresion
+listaExpresion: 
+    expresion {printf("expresion: %d\n", $1);} | listaExpresion ',' expresion {printf("lista expresion: %d\n", $3);}
 ;
 
-expresion: primaria | expresion operadorAditivo primaria 
+expresion: 
+    primaria | expresion '+' primaria { printf("expresion: %d + %d\n", $1, $3); } | expresion '-' primaria { printf("expresion: %d - %d\n", $1, $3); }
 ; 
 
-primaria: ID |CONSTANTE |'(' expresion '('
-;
-
-operadorAditivo: '+' | '-'
+primaria: 
+    ID { $$ = atoi($1); printf("primaria: ID, $$ = %d\n", $$); }  | CONSTANTE { $$ = $1; printf("primaria: CONSTANTE, $$", $$); } |'(' expresion ')'  {$$ = $2; printf("expresion: (%d)\n", $$); }
 ;
 
 %%
 
 void yyerror(char *s) {
-    fprintf(stderr, "%s\n", s);
+    fprintf(stderr, "Error: %s\n", s);
+}
+
+int main() {
+    yyparse();
 }
