@@ -12,7 +12,7 @@ extern int yylexerrs;
 
 %}
 
-%token INICIO FIN LEER ESCRIBIR PUNTOYCOMA IMPRIMIR
+%token INICIO FIN LEER ESCRIBIR PUNTOYCOMA
 %token <id> ID
 %token <cte> CONSTANTE
 
