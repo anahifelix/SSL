@@ -49,15 +49,15 @@ expresion:
 ; 
 
 primaria: 
-    ID { $$ = atoi($1); printf("primaria: ID, $$ = %d\n", $$); }  | CONSTANTE { $$ = $1; printf("primaria: CONSTANTE, $$", $$); } |'(' expresion ')'  {$$ = $2; printf("expresion: (%d)\n", $$); }
+    ID { printf("primaria: ID, d\n", atoi($1)); }  | CONSTANTE { printf("primaria: CONSTANTE, $$", $1); } |'(' expresion ')' { printf("expresion: (%d)\n", $2); }
 ;
 
 %%
 
-void yyerror(char *s) {
-    fprintf(stderr, "Error: %s\n", s);
-}
-
 int main() {
     yyparse();
+}
+
+void yyerror(char *s) {
+    fprintf(stderr, "Error: %s\n", s);
 }
