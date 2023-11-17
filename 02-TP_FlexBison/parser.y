@@ -1,77 +1,43 @@
 %{
-int yylex();
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "y.tab.h"
 
 void yyerror(char *s);
+int yylex();
 
-extern int yynerrs;
-extern int yylexerrs;
-
+char buffer[32];
+int yylexerrs;
 %}
 
-%token INICIO FIN LEER ESCRIBIR PUNTOYCOMA
-%token <id> ID
-%token <cte> CONSTANTE
-
-%union {
-    char* id;
-    int cte;
-}
-
-%left '+' '-' ',' 
-%right ASIGNACION
-
-%type <cte> expresion primaria 
-
-%% 
-
-programa:
-    INICIO listaSentencias FIN                      { if (yynerrs || yylexerrs) YYABORT; return -1;}
-; 
-
-listaSentencias:
-    sentencia  
-    | sentencia listaSentencias
-;
-
-sentencia:
-    ID ASIGNACION expresion PUNTOYCOMA              { printf("Mi expresion de la sentencia es: %d\n", $3); }
-    | LEER '(' listaID ')' PUNTOYCOMA 
-    | ESCRIBIR '(' listaExpresion ')' PUNTOYCOMA
-;
-
-listaID: 
-    ID                                               
-    | listaID  ',' ID                                
-;
-
-listaExpresion: 
-    expresion                                       { printf("Mi expresion es: %d\n", $1); } 
-    | listaExpresion ',' expresion                  { printf("Mi lista expresion: %d\n", $3); }
-;
-
-expresion: 
-    primaria                                        
-    | expresion '+' primaria                        { $$ = $1 + $3; } 
-    | expresion '-' primaria                        { $$ = $1 - $3; }
-; 
-
-primaria: 
-    ID                                              { $$ = obtenerValor($1); }
-    | CONSTANTE                                     { $$ = $1; } 
-    |'(' expresion ')'                              { $$ = $2; }
-;
+letra                   [a-zA-Z]
+numero                  [0-9]
+identificador           {letra}({letra}|{numero})*
+constante               ({numero})+
 
 %%
 
+"inicio"                 {return INICIO;}
+"fin"                   {return FIN;}
+"leer"                  {return LEER;}
+"escribir"              {return ESCRIBIR;}
 
-int main() {
-    yyparse();
-}
+{identificador}         {yylval.id = strdup(yytext); return ID;} 
+{constante}             {yylval.cte = atoi(yytext); return CONSTANTE;}
+"("                     {return '(';}
+")"                     {return ')';}
+";"                     { return  PUNTOYCOMA;}
+"+"                     {return '+';}
+"-"                     {return '-';}
+"*"                     {return '*';}
+","                     {return ',';}
+":="                    {return ASIGNACION;}
+[ \t\n]                 ;
+.                       {yylexerrs++; sprintf(buffer,"Error Lexico: %s es un caracter invalido", yytext); yyerror(buffer);}
 
-void yyerror (char *s){
-    printf ("Mi error es %s\n",s);
+%%
+
+int yywrap(void) {
+    return 1;
 }
