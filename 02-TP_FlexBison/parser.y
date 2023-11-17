@@ -24,12 +24,12 @@ extern int yylexerrs;
 %left '+' '-' ',' 
 %right ASIGNACION
 
-%type <cte> expresion primaria
+%type <cte> expresion primaria 
 
 %% 
 
 programa:
-    INICIO listaSentencias FIN                      {if (yynerrs || yylexerrs) YYABORT; return -1;}
+    INICIO listaSentencias FIN                      { if (yynerrs || yylexerrs) YYABORT; return -1;}
 ; 
 
 listaSentencias:
@@ -38,38 +38,40 @@ listaSentencias:
 ;
 
 sentencia:
-    ID ASIGNACION expresion PUNTOYCOMA  { printf("MI SENTENCIA ES: %d,  %d\n", $1, $3); }
+    ID ASIGNACION expresion PUNTOYCOMA              { printf("Mi expresion de la sentencia es: %d\n", $3); }
     | LEER '(' listaID ')' PUNTOYCOMA 
     | ESCRIBIR '(' listaExpresion ')' PUNTOYCOMA
 ;
 
 listaID: 
-    ID                                          { printf("MI ID EES: %d\n", $1); }
-    | listaID  ',' ID                           { printf("MI ID DE LISTA ES: "); }
+    ID                                               
+    | listaID  ',' ID                                
 ;
 
 listaExpresion: 
-    expresion {printf("expresion: %d\n", $1);} 
-    | listaExpresion ',' expresion {printf("lista expresion: %d\n", $3);}
+    expresion                                       { printf("Mi expresion es: %d\n", $1); } 
+    | listaExpresion ',' expresion                  { printf("Mi lista expresion: %d\n", $3); }
 ;
 
 expresion: 
-    primaria { printf("id de expr: ID, %d\n", $1); }  
-    | expresion '+' primaria { printf("expresion: %d + %d\n", $1, $3); } | expresion '-' primaria { printf("expresion: %d - %d\n", $1, $3); }
+    primaria                                        
+    | expresion '+' primaria                        { $$ = $1 + $3; } 
+    | expresion '-' primaria                        { $$ = $1 - $3; }
 ; 
 
 primaria: 
-    ID { printf("primari id: ID, %d\n", atoi($1)); }  
-    | CONSTANTE { printf("primaria: CONSTANTE, %d\n", $1); } 
-    |'(' expresion ')' { printf("expresion: %d\n", $2); }
+    ID                                              { $$ = obtenerValor($1); }
+    | CONSTANTE                                     { $$ = $1; } 
+    |'(' expresion ')'                              { $$ = $2; }
 ;
 
 %%
+
+
 int main() {
     yyparse();
 }
 
 void yyerror (char *s){
-    printf ("mi error personalizado es %s\n",s);
+    printf ("Mi error es %s\n",s);
 }
-
