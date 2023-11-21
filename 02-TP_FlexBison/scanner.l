@@ -14,16 +14,16 @@ int yylexerrs;
 letra                   [a-zA-Z]
 numero                  [0-9]
 identificador           {letra}({letra}|{numero})*
-constante               ({numero})+
+constante               {numero}({numero})*
 
 %%
 
-"inicio"                 {return INICIO;}
+"inicio"                {return INICIO;}
 "fin"                   {return FIN;}
 "leer"                  {return LEER;}
 "escribir"              {return ESCRIBIR;}
 
-{identificador}         {yylval.id = strdup(yytext); return ID;} 
+{identificador}         {return ID;} 
 {constante}             {yylval.cte = atoi(yytext); return CONSTANTE;}
 "("                     {return '(';}
 ")"                     {return ')';}
@@ -33,7 +33,7 @@ constante               ({numero})+
 ","                     {return ',';}
 ":="                    {return ASIGNACION;}
 [ \t\n]                 ;
-.                       {yylexerrs++; sprintf(buffer,"Error Lexico: %s es un caracter invalido", yytext); yyerror(buffer);}
+.                       {yylexerrs++; printf(buffer,"Error Lexico: %s es un caracter invalido", yytext); yyerror(buffer);}
 
 %%
 
