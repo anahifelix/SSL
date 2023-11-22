@@ -7,8 +7,6 @@
 void yyerror(char *s);
 int yylex();
 
-char buffer[32];
-int yylexerrs;
 %}
 
 letra                   [a-zA-Z]
@@ -32,8 +30,6 @@ constante               {numero}({numero})*
 "-"                     {return '-';}
 ","                     {return ',';}
 ":="                    {return ASIGNACION;}
-[ \t\n]                 ;
-.                       {yylexerrs++; printf(buffer,"Error Lexico: %s es un caracter invalido", yytext); yyerror(buffer);}
 
 %%
 
