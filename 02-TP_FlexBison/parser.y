@@ -7,8 +7,6 @@ int yylex();
 
 void yyerror(char *s);
 
-extern int yynerrs;
-extern int yylexerrs;
 extern int *yytext;
 
 %}
@@ -30,7 +28,7 @@ extern int *yytext;
 %% 
 
 programa:
-    INICIO listaSentencias FIN                      { if (yynerrs || yylexerrs) YYABORT; return -1;}
+    INICIO listaSentencias FIN                      {
 ; 
 
 listaSentencias:
