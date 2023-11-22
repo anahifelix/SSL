@@ -1,0 +1,6 @@
+gcc programita.c -o compilador
+./compilador archivo.m
+
+  si sale todo ok
+
+./archivoEjecutable
