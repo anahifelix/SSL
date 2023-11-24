@@ -28,7 +28,7 @@ extern int *yytext;
 %% 
 
 programa:
-    INICIO listaSentencias FIN                      {
+    INICIO listaSentencias FIN                      
 ; 
 
 listaSentencias:
